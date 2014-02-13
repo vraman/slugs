@@ -1,0 +1,139 @@
+[INPUT]
+e.c11
+e.c12
+e.c13
+e.c14
+e.c21
+e.c22
+e.c23
+e.c24
+e.metal1
+e.glass1
+
+[OUTPUT]
+s.r11
+s.r12
+s.r13
+s.r14
+s.r21
+s.r22
+s.r23
+s.r24
+s.carryingmetal1
+s.carryingglass1
+#s.glassseen1
+#s.metalseen1
+
+[ENV_TRANS]
+ | | | e.c11' e.c12' e.c13' e.c14'
+| | | e.c21' e.c22' e.c23' e.c24'
+
+| ! e.c11' & & ! e.c12' ! e.c13' ! e.c14'
+| ! e.c12' & & ! e.c11' ! e.c13' ! e.c14'
+| ! e.c13' & & ! e.c11' ! e.c12' ! e.c14'
+| ! e.c14' & & ! e.c11' ! e.c12' ! e.c13'
+
+| ! e.c21' & & ! e.c22' ! e.c23' ! e.c24'
+| ! e.c22' & & ! e.c21' ! e.c23' ! e.c24'
+| ! e.c23' & & ! e.c21' ! e.c22' ! e.c24'
+| ! e.c24' & & ! e.c21' ! e.c22' ! e.c23'
+
+| ! & e.c11 s.r11 e.c11'
+| ! & e.c12 s.r12 e.c12'
+| ! & e.c13 s.r13 e.c13'
+| ! & e.c14 s.r14 e.c14'
+| ! & e.c21 s.r21 e.c21'
+| ! & e.c22 s.r22 e.c22'
+| ! & e.c23 s.r23 e.c23'
+| ! & e.c24 s.r24 e.c24'
+
+| ! & e.c11 s.r12 | e.c11' e.c12'
+| ! & e.c11 s.r13 | e.c11' e.c13'
+| ! & e.c12 s.r11 | e.c11' e.c12'
+| ! & e.c12 s.r14 | e.c14' e.c12'
+| ! & e.c13 s.r11 | e.c11' e.c13'
+| ! & e.c13 s.r14 | e.c14' e.c13'
+| ! & e.c14 s.r13 | e.c14' e.c13'
+| ! & e.c14 s.r12 | e.c14' e.c12'
+
+| ! & e.c21 s.r22 | e.c21' e.c22'
+| ! & e.c21 s.r23 | e.c21' e.c23'
+| ! & e.c22 s.r21 | e.c21' e.c22'
+| ! & e.c22 s.r24 | e.c24' e.c22'
+| ! & e.c23 s.r21 | e.c21' e.c23'
+| ! & e.c23 s.r24 | e.c24' e.c23'
+| ! & e.c24 s.r23 | e.c24' e.c23'
+| ! & e.c24 s.r22 | e.c24' e.c22'
+
+
+#| ! s.glassseen1 ! e.glass1'
+#| ! s.metalseen1 ! e.metal1'
+
+
+
+[ENV_LIVENESS]
+#| | | | | | | | & s.r11 e.c11' & s.r11 ! s.r11' | & s.r12 e.c12' & s.r12 ! s.r12' | & s.r13 e.c13' & s.r13 ! s.r13'  | & s.r14 e.c14' & s.r14 ! s.r14' | & s.r21 e.c21' & s.r21 ! s.r21' | & s.r22 e.c22' & s.r22 ! s.r22' | & s.r23 e.c23' & s.r23 ! s.r23' | & s.r24 e.c24' & s.r24 ! s.r24' 
+& & & & & & & | ! s.r11 e.c11' | ! s.r12 e.c12' | ! s.r13 e.c13' | ! s.r14 e.c14' | ! s.r21 e.c21' | ! s.r22 e.c22' | ! s.r23 e.c23' | ! s.r24 e.c24'
+
+
+
+[ENV_INIT]
+& & & & & & & & & e.c11 e.c24 ! e.c12 ! e.c13 ! e.c14 ! e.c21 ! e.c22 ! e.c23 ! e.metal1 ! e.glass1
+
+
+[SYS_TRANS]
+
+| | | s.r11' s.r12' s.r13' s.r14'
+| | | s.r21' s.r22' s.r23' s.r24'
+
+| ! s.r11' & & ! s.r12' ! s.r13' ! s.r14'
+| ! s.r12' & & ! s.r11' ! s.r13' ! s.r14'
+| ! s.r13' & & ! s.r11' ! s.r12' ! s.r14'
+| ! s.r14' & & ! s.r11' ! s.r12' ! s.r13'
+
+| ! s.r21' & & ! s.r22' ! s.r23' ! s.r24'
+| ! s.r22' & & ! s.r21' ! s.r23' ! s.r24'
+| ! s.r23' & & ! s.r21' ! s.r22' ! s.r24'
+| ! s.r24' & & ! s.r21' ! s.r22' ! s.r23'
+
+| ! e.c11' | | s.r11' s.r12' s.r13'
+| ! e.c12' | | s.r11' s.r12' s.r14'
+| ! e.c13' | | s.r11' s.r13' s.r14'
+| ! e.c14' | | s.r12' s.r13' s.r14'
+
+| ! e.c21' | | s.r21' s.r22' s.r23'
+| ! e.c22' | | s.r21' s.r22' s.r24'
+| ! e.c23' | | s.r21' s.r23' s.r24'
+| ! e.c24' | | s.r22' s.r23' s.r24'
+
+! & e.c11' e.c21'
+! & e.c12' e.c22'
+! & e.c13' e.c23'
+! & e.c14' e.c24'
+
+| ! & e.c14 e.c21 & s.r14 s.r21
+
+
+| ! & | e.glass1' s.carryingglass1 ! e.c14' s.carryingglass1'
+| ! & | e.metal1' s.carryingmetal1 ! e.c12' s.carryingmetal1'
+
+| & | e.glass1' s.carryingglass1 ! e.c14' ! s.carryingglass1'
+| & | e.metal1' s.carryingmetal1 ! e.c12' ! s.carryingmetal1'
+
+#| ! | s.glassseen1 e.glass1' s.glassseen1'
+#| ! | s.metalseen1 e.metal1' s.metalseen1'
+#| ! & ! s.glassseen1 ! e.glass1' ! s.glassseen1'
+#| ! & ! s.metalseen1 ! e.metal1' ! s.metalseen1'
+
+#| ! s.glassseen1 s.glassseen1'
+#| ! s.metalseen1 s.metalseen1'
+
+
+[SYS_LIVENESS]
+| ! s.carryingmetal1 e.c12'
+| ! s.carryingglass1 e.c14'
+e.c14
+e.c21
+	 
+[SYS_INIT]
+& & & & & & & & & s.r11 s.r24 ! s.r12 ! s.r13 ! s.r14 ! s.r21 ! s.r22 ! s.r23 ! s.carryingglass1 ! s.carryingmetal1

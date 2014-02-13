@@ -1,0 +1,100 @@
+[INPUT]
+before_update
+pkt_in
+src_Auth
+src_Guest
+purpose_Web
+purpose_Other
+
+[OUTPUT]
+port_I
+port_START
+port_WORLD
+port_DROP
+update
+pkt_out
+mem_WORLD
+
+[ENV_TRANS]
+| update before_update'
+| before_update ! before_update'
+
+| ! & pkt_in ! pkt_out pkt_in'
+| ! & pkt_in pkt_out ! pkt_in'
+
+| ! pkt_in' | src_Auth' src_Guest'
+| pkt_in' ! | src_Auth' src_Guest'
+| ! src_Auth' ! src_Guest'
+ 
+| ! & & pkt_in src_Guest ! pkt_out src_Guest'
+| ! & & pkt_in src_Auth ! pkt_out src_Auth'
+
+| ! pkt_in' | purpose_Web' purpose_Other'
+| pkt_in' ! | purpose_Web' purpose_Other'
+| ! purpose_Web' ! purpose_Other'
+ 
+| ! & & pkt_in purpose_Other ! pkt_out purpose_Other'
+| ! & & pkt_in purpose_Web ! pkt_out purpose_Web'
+
+
+[ENV_LIVENESS]
+| ! update ! before_update'
+| pkt_in ! pkt_in'
+| ! & & before_update' port_START pkt_out ! pkt_in' 
+
+
+[ENV_INIT]
+before_update
+! pkt_in
+! src_Auth
+! src_Guest
+! purpose_Web
+! purpose_Other
+
+
+[SYS_TRANS]
+
+| | | port_I' port_START' port_WORLD' port_DROP'
+
+| ! port_I' & & ! port_START' ! port_WORLD' ! port_DROP'
+| ! port_START' & & ! port_I' ! port_WORLD' ! port_DROP'
+| ! port_WORLD' & & ! port_I' ! port_START' ! port_DROP'
+| ! port_DROP' & & ! port_I' ! port_START' ! port_WORLD'
+
+| before_update' | ! & port_I ! | & src_Guest purpose_Web src_Auth' port_DROP'
+| before_update' | ! & port_I ! | & src_Guest purpose_Web src_Auth' ! port_WORLD'
+| before_update' | ! & port_I | & src_Guest purpose_Web src_Auth' ! port_DROP'
+| before_update' | ! & port_I | & src_Guest purpose_Web src_Auth' port_WORLD'
+
+| ! before_update' | ! port_I port_WORLD'
+| ! before_update' | ! port_I ! port_DROP'
+
+| ! & ! update before_update' | ! pkt_in' mem_WORLD'
+
+| ! & ! port_WORLD | & src_Guest purpose_Web src_Auth' mem_WORLD'
+
+| mem_WORLD' ! & mem_WORLD ! port_WORLD
+
+
+| ! port_START | ! pkt_in' | port_START' port_I'
+| ! & ! pkt_in' port_START port_START'
+| ! | port_DROP port_WORLD port_START'
+
+| pkt_out' ! | port_DROP' port_WORLD'
+| ! pkt_out' | port_DROP' port_WORLD'
+
+| ! update update'
+
+
+[SYS_LIVENESS]
+& & update | ! pkt_in pkt_out' | ! mem_WORLD port_WORLD
+
+
+[SYS_INIT]
+! update
+! pkt_out
+port_START
+! port_I
+! port_WORLD
+! port_DROP
+! mem_WORLD

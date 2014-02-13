@@ -1,0 +1,89 @@
+
+	 glass :  boolean; 
+	 metal :  boolean;
+	 c_11 : boolean;
+	 c_12 : boolean;
+	 c_13 : boolean;
+	 c_14 : boolean;
+	 c_21 : boolean;
+	 c_22 : boolean;
+	 c_23 : boolean;
+	 c_24 : boolean;
+	 c_drop : boolean;
+	 c_pickup : boolean
+		 
+	 & & & & & & & & & & & ! glass ! metal c_11 c_24 ! c_12 ! c_13 ! c_14 ! c_21 ! c_22 ! c_23 c_drop c_pickup
+	
+	| ! & c_11 r_11 c_11
+	| ! & c_12 r_12 c_12
+	| ! & c_13 r_13 c_13
+	| ! & c_14 r_14 c_14
+	| ! & c_21 r_21 c_21
+	| ! & c_22 r_22 c_22
+	| ! & c_23 r_23 c_23
+	| ! & c_24 r_24 c_24
+	
+	| ! & c_11 r_12 | c_11 c_12
+	| ! & c_11 r_13 | c_11 c_13
+	| ! & c_12 r_11 | c_11 c_12
+	| ! & c_12 r_14 | c_14 c_12
+	| ! & c_13 r_11 | c_11 c_13
+	| ! & c_13 r_14 | c_14 c_13
+	| ! & c_14 r_13 | c_14 c_13
+	| ! & c_14 r_12 | c_14 c_12
+	
+	| ! & c_21 r_22 | c_21 c_22
+	| ! & c_21 r_23 | c_21 c_23
+	| ! & c_22 r_21 | c_21 c_22
+	| ! & c_22 r_24 | c_24 c_22
+	| ! & c_23 r_21 | c_21 c_23
+	| ! & c_23 r_24 | c_24 c_23
+	| ! & c_24 r_23 | c_24 c_23
+	| ! & c_24 r_22 | c_24 c_22
+	
+	| ! & c_drop drop c_drop
+	| ! & ! c_drop ! drop ! c_drop
+	
+	| ! & c_pickup pickup c_pickup
+	| ! & ! c_pickup ! pickup ! c_pickup
+	
+	
+	
+	 | | | | | | | | & r_11 c_11' & r_11 ! r_11'/
+			   | & r_12 c_12' & r_12 ! r_12'/
+			   | & r_13 c_13' & r_13 ! r_13'/
+			   | & r_14 c_14' & r_14 ! r_14'/
+			   | & r_21 c_21' & r_21 ! r_21'/
+			   | & r_22 c_22' & r_22 ! r_22'/
+			   | & r_23 c_23' & r_23 ! r_23'/
+			   | & r_24 c_24' & r_24 ! r_24'/
+			   
+	 
+	 
+	 | | | & drop c_drop' & ! drop ! c_drop' & drop ! drop' & ! drop drop'
+	 | | | & pickup c_pickup' & ! pickup ! c_pickup' & pickup ! pickup' & ! pickup pickup'
+	
+	
+	 r_11 : boolean;
+	 r_12 : boolean;
+	 r_13 : boolean;
+	 r_14 : boolean;
+	 r_21 : boolean;
+	 r_22 : boolean;
+	 r_23 : boolean;
+	 r_24 : boolean;
+	 drop1 : boolean;
+	 pickup1 : boolean
+	 mem_metal1 : boolean
+	 mem_glass1 : boolean
+	 drop2 : boolean;
+	 pickup2 : boolean
+	 mem_metal2 : boolean
+	 mem_glass2 : boolean
+	 
+	 & & & & & & & & & & & ! mem_metal ! mem_glass ! drop ! pickup ! r_11 ! r_24 ! r_12 ! r_13 ! r_14 ! r_21 ! r_22 ! r_23
+	
+	 | ! metal mem_metal'
+	 | ! glass mem_glass'
+	 | ! & mem_metal ! mem_metal'
+	 | ! & mem_glass ! mem_glass'
