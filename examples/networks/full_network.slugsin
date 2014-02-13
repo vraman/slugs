@@ -1,0 +1,126 @@
+[INPUT]
+before_I
+before_F2_0
+pkt_in
+src_Auth
+src_Guest
+purpose_Web
+purpose_Other
+
+[OUTPUT]
+port_I
+port_F1_0
+port_F2_0
+port_F3_0
+port_START
+port_WORLD
+port_DROP
+update_I
+update_F2_0
+pkt_out
+mem_WORLD
+
+[ENV_TRANS]
+| update_I before_I'
+| update_F2_0 before_F2_0'
+| before_I ! before_I'
+| before_F2_0 ! before_F2_0'
+
+| ! & pkt_in ! pkt_out pkt_in'
+| ! & pkt_in pkt_out ! pkt_in'
+
+| ! pkt_in' | src_Auth' src_Guest'
+| pkt_in' ! | src_Auth' src_Guest'
+| ! src_Auth' ! src_Guest'
+ 
+| ! & & pkt_in src_Guest ! pkt_out src_Guest'
+| ! & & pkt_in src_Auth ! pkt_out src_Auth'
+
+| ! pkt_in' | purpose_Web' purpose_Other'
+| pkt_in' ! | purpose_Web' purpose_Other'
+| ! purpose_Web' ! purpose_Other'
+ 
+| ! & & pkt_in purpose_Other ! pkt_out purpose_Other'
+| ! & & pkt_in purpose_Web ! pkt_out purpose_Web'
+
+
+[ENV_LIVENESS]
+| ! update_I ! before_I'
+| ! update_F2_0 ! before_F2_0'
+| pkt_in ! pkt_in'
+| ! & & before_I' port_START pkt_out ! pkt_in' 
+
+
+[ENV_INIT]
+before_I
+before_F2_0
+! pkt_in
+! src_Auth
+! src_Guest
+! purpose_Web
+! purpose_Other
+
+
+[SYS_TRANS]
+
+| | | | | | port_I port_F1_0 port_F2_0 port_F3_0 port_START port_WORLD port_DROP
+
+| ! port_I' & & & & & ! port_F1_0' ! port_F2_0' ! port_F3_0' ! port_START' ! port_WORLD' ! port_DROP'
+| ! port_F1_0' & & & & & ! port_I' ! port_F2_0' ! port_F3_0' ! port_START' ! port_WORLD' ! port_DROP'
+| ! port_F2_0' & & & & & ! port_I' ! port_F1_0' ! port_F3_0' ! port_START' ! port_WORLD' ! port_DROP'
+| ! port_F3_0' & & & & & ! port_I' ! port_F1_0' ! port_F2_0' ! port_START' ! port_WORLD' ! port_DROP'
+| ! port_START' & & & & & ! port_I' ! port_F1_0' ! port_F2_0' ! port_F3_0' ! port_WORLD' ! port_DROP'
+| ! port_WORLD' & & & & & ! port_I' ! port_F1_0' ! port_F2_0' ! port_F3_0' ! port_START' ! port_DROP'
+| ! port_DROP' & & & & & ! port_I' ! port_F1_0' ! port_F2_0' ! port_F3_0' ! port_START' ! port_WORLD'
+
+
+
+
+| ! & ! port_WORLD | & src_Guest purpose_Web src_Auth' mem_WORLD'
+
+| mem_WORLD' ! & mem_WORLD ! port_WORLD
+
+| ! port_START | ! pkt_in' | port_START' port_I'
+
+| ! & ! pkt_in' port_START port_START'
+| ! | port_DROP port_WORLD port_START'
+
+| ! & pkt_in' port_START port_I'
+| & pkt_in' port_START ! port_I'
+
+| ! before_I' | ! & port_I src_Auth | port_F1_0' port_F2_0'
+| before_I' | ! & port_I src_Auth port_F1_0'
+| ! before_I' | ! & port_I src_Guest port_F3_0'
+| before_I' | ! & port_I src_Guest | port_F2_0' port_F3_0'
+| ! port_F1_0 port_WORLD'
+| ! before_F2_0' | ! port_F2_0 port_WORLD'
+| before_F2_0' | ! & port_F2_0 purpose_Web port_WORLD'
+| before_F2_0' | ! & port_F2_0 purpose_Other port_DROP'
+| ! & port_F3_0 purpose_Web port_WORLD'
+| ! & port_F3_0 purpose_Other port_DROP'
+
+
+
+| pkt_out' ! | port_DROP' port_WORLD'
+| ! pkt_out' | port_DROP' port_WORLD'
+
+| ! update_I update_I'
+| ! update_F2_0 update_F2_0'
+
+
+[SYS_LIVENESS]
+& & & update_I update_F2_0 | ! pkt_in pkt_out' | ! mem_WORLD port_WORLD
+
+
+[SYS_INIT]
+! update_I
+! update_F2_0
+! pkt_out
+port_START
+! port_I
+! port_F1_0
+! port_F2_0
+! port_F3_0
+! port_WORLD
+! port_DROP
+! mem_WORLD
