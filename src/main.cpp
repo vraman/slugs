@@ -38,6 +38,7 @@
 #include "extensionComputeCNFFormOfTheSpecification.hpp"
 #include "extensionBiasForAction.hpp"
 #include "extensionExtractExplicitStrategy.hpp"
+#include "extensionCausal.hpp"
 #include "extensionCounterstrategy.hpp"
 #include "extensionExtractExplicitCounterstrategy.hpp"
 #include "extensionRoboticsSemantics.hpp"
@@ -73,6 +74,7 @@ const char *commandLineArguments[] = {
     "--fixedPointRecycling","Modifies the realizability checking algorithm to recycle previous innermost fixed points. Realizability checking should typically become faster this way.",
     "--interactiveStrategy","Opens an interactive shell after realizability checking to allow examining the properties of the generated strategy.",
     "--IROSfastslow","Uses fastslow semantics from IROS 2012 paper. Requires different input file format.",
+    "--analyzeCausal","Tries to find a causal controller for bounded liveness specifications.",
     "--analyzeInterleaving","Interleaves the turn-taking. Requires different input file format.",
     "--analyzeInitialPositions","Performs an analysis of the set of starting positions in the realizability game.",
     "--restrictToReachableStates","Restricts the analysis of the starting positions (see --analyzeInitialPositions) to reachable ones.",
@@ -146,6 +148,7 @@ OptionCombination optionCombinations[] = {
     OptionCombination("--IROSfastslow --onlyRealizability --sysInitRoboticsSemantics",XRoboticsSemantics<XIROSFS<GR1Context> >::makeInstance),
     OptionCombination("--IROSfastslow --symbolicStrategy",XExtractSymbolicStrategy<XIROSFS<GR1Context>,false>::makeInstance),
     OptionCombination("--IROSfastslow --symbolicStrategy --sysInitRoboticsSemantics",XExtractSymbolicStrategy<XRoboticsSemantics<XIROSFS<GR1Context> >,false>::makeInstance),
+    OptionCombination("--analyzeCausal",XCausal<GR1Context>::makeInstance),
     OptionCombination("--analyzeInterleaving",XInterleave<GR1Context>::makeInstance),
     OptionCombination("--analyzeInitialPositions", XAnalyzeInitialPositions<GR1Context,false>::makeInstance),
     OptionCombination("--analyzeInitialPositions --restrictToReachableStates", XAnalyzeInitialPositions<GR1Context,true>::makeInstance),

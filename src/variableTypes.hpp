@@ -68,6 +68,9 @@ typedef enum {
     // Variables used in "extensionIROSfastslow.hpp"
     PreOutputFast, PreOutputSlow, PostOutputFast, PostOutputSlow,
     
+    // Variables used in "extensionCausal.hpp"
+    PreOutputFuture, PreOutputCurr, PostOutputFuture, PostOutputCurr,
+
     // Variables used in "extensionInterleave.hpp"
     PreOutputBefore, PreOutputAfter, PostOutputBefore, PostOutputAfter,
 
@@ -106,6 +109,10 @@ REGISTER_VARIABLE_TYPE_STRING(PreOutputBefore,"PreOutputBefore")
 REGISTER_VARIABLE_TYPE_STRING(PreOutputAfter,"PreOutputAfter")
 REGISTER_VARIABLE_TYPE_STRING(PostOutputBefore,"PostOutputBefore")
 REGISTER_VARIABLE_TYPE_STRING(PostOutputAfter,"PostOutputAfter")
+REGISTER_VARIABLE_TYPE_STRING(PreOutputBefore,"PreOutputFuture")
+REGISTER_VARIABLE_TYPE_STRING(PreOutputAfter,"PreOutputCurr")
+REGISTER_VARIABLE_TYPE_STRING(PostOutputBefore,"PostOutputFuture")
+REGISTER_VARIABLE_TYPE_STRING(PostOutputAfter,"PostOutputCurr")
 REGISTER_VARIABLE_TYPE_STRING(ObservablePre,"ObservablePre")
 REGISTER_VARIABLE_TYPE_STRING(ObservablePost,"ObservablePost")
 REGISTER_VARIABLE_TYPE_STRING(UnobservablePre,"UnobservablePre")
@@ -136,14 +143,24 @@ REGISTER_VARIABLE_TYPE_HIERARCHY(PreInput,Pre)
 REGISTER_VARIABLE_TYPE_HIERARCHY(PostInput,Post)
 REGISTER_VARIABLE_TYPE_HIERARCHY(PreOutput,Pre)
 REGISTER_VARIABLE_TYPE_HIERARCHY(PostOutput,Post)
+
+// Variables used in extensionIROSfastslow.hpp
 REGISTER_VARIABLE_TYPE_HIERARCHY(PreOutputFast,PreOutput)
 REGISTER_VARIABLE_TYPE_HIERARCHY(PreOutputSlow,PreOutput)
 REGISTER_VARIABLE_TYPE_HIERARCHY(PostOutputFast,PostOutput)
 REGISTER_VARIABLE_TYPE_HIERARCHY(PostOutputSlow,PostOutput)
+
+// Variables used in extensionInterleave.hpp
 REGISTER_VARIABLE_TYPE_HIERARCHY(PreOutputBefore,PreOutput)
 REGISTER_VARIABLE_TYPE_HIERARCHY(PreOutputAfter,PreOutput)
 REGISTER_VARIABLE_TYPE_HIERARCHY(PostOutputBefore,PostOutput)
 REGISTER_VARIABLE_TYPE_HIERARCHY(PostOutputAfter,PostOutput)
+
+// Variables used in extensionCausal.hpp
+REGISTER_VARIABLE_TYPE_HIERARCHY(PreOutputFuture,PreOutput)
+REGISTER_VARIABLE_TYPE_HIERARCHY(PreOutputCurr,PreOutput)
+REGISTER_VARIABLE_TYPE_HIERARCHY(PostOutputFuture,PostOutput)
+REGISTER_VARIABLE_TYPE_HIERARCHY(PostOutputCurr,PostOutput)
 
 // Variables used in "IncompleteInformationEstimatorSynthesis.hpp"
 REGISTER_VARIABLE_TYPE_HIERARCHY(ObservablePre,PreInput)
