@@ -1,0 +1,67 @@
+[INPUT]
+s_Nemo
+
+[OUTPUT]
+rob1_r1
+rob1_r2
+rob1_r3
+rob1_r4
+rob1_r5
+rob1_r6
+rob1_r7
+rob1_r8
+rob1_r9
+rob1_r10
+rob1_r11
+rob1_r12
+a_cameraOn
+
+[ENV_TRANS]
+| ! & & & ! rob1_r1 ! rob1_r3 ! rob1_r5 ! rob1_r8 | & ! s_Nemo' ! s_Nemo & s_Nemo' s_Nemo
+
+[ENV_INIT]
+! s_Nemo
+
+[SYS_TRANS]
+# adjacency
+| ! rob1_r1 | rob1_r1' rob1_r9'
+| ! rob1_r2 | rob1_r2' rob1_r12'
+| ! rob1_r3 | rob1_r3' rob1_r11'
+| ! rob1_r4 | rob1_r4' rob1_r11'
+| ! rob1_r5 | rob1_r5' rob1_r10'
+| ! rob1_r6 | rob1_r6' rob1_r10'
+| ! rob1_r7 | rob1_r7' rob1_r10'
+| ! rob1_r8 | rob1_r8' rob1_r9'
+| ! rob1_r9 | | | | rob1_r1' rob1_r8' rob1_r9' rob1_r10' rob1_r12'
+| ! rob1_r10 | | | | | rob1_r5' rob1_r6' rob1_r7' rob1_r9' rob1_r10' rob1_r11'
+| ! rob1_r11 | | | | rob1_r3' rob1_r4' rob1_r10' rob1_r11' rob1_r12'
+| ! rob1_r12 | | | rob1_r2' rob1_r9' rob1_r11' rob1_r12'
+# mutual exclusion
+| | | | | | | | | | | rob1_r1' rob1_r2' rob1_r3' rob1_r4' rob1_r5' rob1_r6' rob1_r7' rob1_r8' rob1_r9' rob1_r10' rob1_r11' rob1_r12'
+| ! rob1_r1' ! | | | | | | | | | | rob1_r2' rob1_r3' rob1_r4' rob1_r5' rob1_r6' rob1_r7' rob1_r8' rob1_r9' rob1_r10' rob1_r11' rob1_r12'
+| ! rob1_r2' ! | | | | | | | | | | rob1_r1' rob1_r3' rob1_r4' rob1_r5' rob1_r6' rob1_r7' rob1_r8' rob1_r9' rob1_r10' rob1_r11' rob1_r12'
+| ! rob1_r3' ! | | | | | | | | | | rob1_r1' rob1_r2' rob1_r4' rob1_r5' rob1_r6' rob1_r7' rob1_r8' rob1_r9' rob1_r10' rob1_r11' rob1_r12'
+| ! rob1_r4' ! | | | | | | | | | | rob1_r1' rob1_r2' rob1_r3' rob1_r5' rob1_r6' rob1_r7' rob1_r8' rob1_r9' rob1_r10' rob1_r11' rob1_r12'
+| ! rob1_r5' ! | | | | | | | | | | rob1_r1' rob1_r2' rob1_r3' rob1_r4' rob1_r6' rob1_r7' rob1_r8' rob1_r9' rob1_r10' rob1_r11' rob1_r12'
+| ! rob1_r6' ! | | | | | | | | | | rob1_r1' rob1_r2' rob1_r3' rob1_r4' rob1_r5' rob1_r7' rob1_r8' rob1_r9' rob1_r10' rob1_r11' rob1_r12'
+| ! rob1_r7' ! | | | | | | | | | | rob1_r1' rob1_r2' rob1_r3' rob1_r4' rob1_r5' rob1_r6' rob1_r8' rob1_r9' rob1_r10' rob1_r11' rob1_r12'
+| ! rob1_r8' ! | | | | | | | | | | rob1_r1' rob1_r2' rob1_r3' rob1_r4' rob1_r5' rob1_r6' rob1_r7' rob1_r9' rob1_r10' rob1_r11' rob1_r12'
+| ! rob1_r9' ! | | | | | | | | | | rob1_r1' rob1_r2' rob1_r3' rob1_r4' rob1_r5' rob1_r6' rob1_r7' rob1_r8' rob1_r10' rob1_r11' rob1_r12'
+| ! rob1_r10' ! | | | | | | | | | | rob1_r1' rob1_r2' rob1_r3' rob1_r4' rob1_r5' rob1_r6' rob1_r7' rob1_r8' rob1_r9' rob1_r11' rob1_r12'
+| ! rob1_r11' ! | | | | | | | | | | rob1_r1' rob1_r2' rob1_r3' rob1_r4' rob1_r5' rob1_r6' rob1_r7' rob1_r8' rob1_r9' rob1_r10' rob1_r12'
+| ! rob1_r12' ! | | | | | | | | | | rob1_r1' rob1_r2' rob1_r3' rob1_r4' rob1_r5' rob1_r6' rob1_r7' rob1_r8' rob1_r9' rob1_r10' rob1_r11'
+| ! s_Nemo' & & & & & & & & & & & & | & ! rob1_r1' ! rob1_r1 & rob1_r1' rob1_r1 | & ! rob1_r2' ! rob1_r2 & rob1_r2' rob1_r2 | & ! rob1_r3' ! rob1_r3 & rob1_r3' rob1_r3 | & ! rob1_r4' ! rob1_r4 & rob1_r4' rob1_r4 | & ! rob1_r5' ! rob1_r5 & rob1_r5' rob1_r5 | & ! rob1_r6' ! rob1_r6 & rob1_r6' rob1_r6 | & ! rob1_r7' ! rob1_r7 & rob1_r7' rob1_r7 | & ! rob1_r8' ! rob1_r8 & rob1_r8' rob1_r8 | & ! rob1_r9' ! rob1_r9 & rob1_r9' rob1_r9 | & ! rob1_r10' ! rob1_r10 & rob1_r10' rob1_r10 | & ! rob1_r11' ! rob1_r11 & rob1_r11' rob1_r11 | & ! rob1_r12' ! rob1_r12 & rob1_r12' rob1_r12 a_cameraOn'
+| ! ! s_Nemo' ! a_cameraOn'
+
+[SYS_INIT]
+| | & & rob1_r1 ! rob1_r2 ! rob1_r3 & & ! rob1_r1 rob1_r2 ! rob1_r3 & & & & & & & & & & & & ! rob1_r1 ! rob1_r2 rob1_r3 ! rob1_r4 ! rob1_r5 ! rob1_r6 ! rob1_r7 ! rob1_r8 ! rob1_r9 ! rob1_r10 ! rob1_r11 ! rob1_r12 ! a_cameraOn
+
+[ENV_LIVENESS]
+1
+
+[SYS_LIVENESS]
+| rob1_r1 s_Nemo
+| rob1_r3 s_Nemo
+| rob1_r5 s_Nemo
+| rob1_r8 s_Nemo
+
