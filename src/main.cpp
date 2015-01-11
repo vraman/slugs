@@ -98,7 +98,9 @@ const char *commandLineArguments[] = {
     "--strategyNonDeterministicMotion","Extract a strategy in the non-deterministic abstraction setting.",
     "--environmentRefinementNonDeterministicMotion","Automatically compute new assumptions and guarantees to address unrealizability in specs involving non-deterministic robot abstractions",
     "--nonDeterministicMotionFastSlow","Computes a controller using an non-deterministic motion abstraction using a fast-slow implementation.",
-    "--symbolicCounterStrategy","Computes a symbolic environment counterstrategy."
++    "--symbolicCounterstrategy","Extract a symbolic (BDD-based) counterstrategy.",
++    "--explicitCuts","extract edges from one gigantic counterStrategy and output explicit strategy",
++    "--symbolicCuts","extract edges from one gigantic counterStrategy and output sybmolic strategy"
 };
 
 //===================================================================================
@@ -179,7 +181,7 @@ OptionCombination optionCombinations[] = {
     // OptionCombination("--environmentRefinementNonDeterministicMotion", XRefineAssumptionsForNondeterministicMotion<XExtractExplicitCounterStrategyNondeterministicMotion<XNonDeterministicMotion<XCounterStrategyNondeterministicMotion<GR1Context,false> ,false> > >::makeInstance)
     OptionCombination("--nonDeterministicMotionFastSlow", XNonDeterministicMotionFastSlow<GR1Context,false>::makeInstance),
     OptionCombination("--explicitCuts",XExtractExplicitCounterStrategyCuts<XCounterStrategy<GR1Context,false> >::makeInstance),
-    OptionCombination("--symbolicCounterStrategy",XExtractSymbolicCounterStrategy<XCounterStrategy<GR1Context,false> >::makeInstance),
+    OptionCombination("--symbolicCounterstrategy",XExtractSymbolicCounterStrategy<XCounterStrategy<GR1Context,false> >::makeInstance),
     OptionCombination("--symbolicCuts",XExtractSymbolicCounterStrategyCuts<XCounterStrategy<GR1Context,false> >::makeInstance)
 
 
