@@ -39,6 +39,7 @@ HEADERS += BFAbstractionLibrary/BF.h BFAbstractionLibrary/BFCudd.h gr1context.hp
     extensionInteractiveRefineAssumptionsForNondeterministicMotion.hpp \
     extensionNondeterministicMotionFastSlow.hpp \
     extensionExtractExplicitCounterstrategyCuts.hpp \
+    extensionExtractSymbolicCounterstrategy.hpp \
     extensionExtractSymbolicCounterstrategyCuts.hpp
 
 SOURCES += main.cpp BFAbstractionLibrary/bddDump.cpp BFAbstractionLibrary/BFCuddVarVector.cpp BFAbstractionLibrary/BFCudd.cpp BFAbstractionLibrary/BFCuddManager.cpp \
