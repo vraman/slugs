@@ -48,7 +48,7 @@ protected:
     // -- Computes cuts symbolically
   
     BF deadlockCuts = mgr.constantTrue();
-    BF livelockCuts = mgr.constantFalse(); 
+    BF livelockCuts = mgr.constantTrue(); 
 
     XExtractSymbolicCounterStrategyCuts<T>(std::list<std::string> &filenames) : T(filenames) {
         if (filenames.size()==1) {
