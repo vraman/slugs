@@ -47,7 +47,8 @@ protected:
     // -- For livelock, ONE transition that satisfies foundCutConditions must be excluded PER GOAL.
     // -- Computes cuts symbolically
   
-    BF foundCutConditions = mgr.constantTrue(); 
+    BF deadlockCuts = mgr.constantTrue();
+    BF livelockCuts = mgr.constantFalse(); 
 
     XExtractSymbolicCounterStrategyCuts<T>(std::list<std::string> &filenames) : T(filenames) {
         if (filenames.size()==1) {
@@ -89,7 +90,8 @@ void execute() {
                 of.close();
             }
         }
-        BF_newDumpDot(*this,foundCutConditions,NULL,"/tmp/foundCutConditions.dot");
+        BF_newDumpDot(*this,deadlockCuts,NULL,"/tmp/deadlockCuts.dot");
+        BF_newDumpDot(*this,livelockCuts,NULL,"/tmp/livelockCuts.dot");
 }
 
     
@@ -105,10 +107,6 @@ void computeAndPrintSymbolicStrategy(std::ostream &outputStream) {
     std::map<std::pair<size_t, std::pair<unsigned int, unsigned int> >, unsigned int > lookupTableForPastStates;
     std::vector<BF> bfsUsedInTheLookupTable;
     std::list<std::pair<size_t, std::pair<unsigned int, unsigned int> > > todoList;
-
-    
-    BF livelockCut = mgr.constantTrue();
-    BF deadlockCut = mgr.constantTrue();
 
     std::vector<BF> livelockCutPerGoal(livenessGuarantees.size());
     for (unsigned int j=0;j<livenessGuarantees.size();j++) {
@@ -137,7 +135,7 @@ void computeAndPrintSymbolicStrategy(std::ostream &outputStream) {
 	// adds options to exclude deadlock and livelock for goal j
 	for (unsigned int j=0;j<livenessGuarantees.size();j++) {
 	  // excludes deadlock
-	  deadlockCut &= !((strategy[j] & safetyEnv & !safetySys).UnivAbstract(varCubePostOutput));
+	  deadlockCuts &= !((strategy[j] & safetyEnv & !safetySys).UnivAbstract(varCubePostOutput));
 	  // excludes livelock
 	  livelockCutPerGoal[j] |= !(strategy[j].UnivAbstract(varCubePostOutput));
         }
@@ -147,10 +145,9 @@ void computeAndPrintSymbolicStrategy(std::ostream &outputStream) {
 	
     for (unsigned int j=0;j<livenessGuarantees.size();j++) {
       // exclude livelock for all goals
-      livelockCut &= livelockCutPerGoal[j];
+      livelockCuts &= livelockCutPerGoal[j];
     }
     
-    foundCutConditions = deadlockCut & livelockCut;
 }
 
 
