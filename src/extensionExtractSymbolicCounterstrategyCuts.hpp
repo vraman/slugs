@@ -135,9 +135,9 @@ void computeAndPrintSymbolicStrategy(std::ostream &outputStream) {
 	// adds options to exclude deadlock and livelock for goal j
 	for (unsigned int j=0;j<livenessGuarantees.size();j++) {
 	  // excludes deadlock
-	  deadlockCuts &= !((strategy[j] & safetyEnv & !safetySys).UnivAbstract(varCubePostOutput));
+	  deadlockCuts &= safetyEnv & !((strategy[j] & safetyEnv & !safetySys).UnivAbstract(varCubePostOutput));
 	  // excludes livelock
-	  livelockCutPerGoal[j] |= !(strategy[j].UnivAbstract(varCubePostOutput));
+	  livelockCutPerGoal[j] |= safetyEnv & !(strategy[j].UnivAbstract(varCubePostOutput));
         }
     }
     
@@ -145,7 +145,9 @@ void computeAndPrintSymbolicStrategy(std::ostream &outputStream) {
 	
     for (unsigned int j=0;j<livenessGuarantees.size();j++) {
       // exclude livelock for all goals
-      livelockCuts &= livelockCutPerGoal[j];
+      if (!livelockCutPerGoal[j].isFalse()) {
+	livelockCuts &= livelockCutPerGoal[j];
+      }
     }
     
 }

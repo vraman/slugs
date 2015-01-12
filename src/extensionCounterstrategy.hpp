@@ -58,22 +58,22 @@ public:
     // Iterate until we have found a fixed point
     for (;!mu2.isFixedPointReached();) {
 
-        // To extract a counterstrategy in case of unrealizability, we need to store a sequence of 'preferred' transitions in the
-        // game structure. These preferred transitions only need to be computed during the last execution of the middle
-        // greatest fixed point. Since we don't know which one is the last one, we store them in every iteration,
-        // so that after the last iteration, we obtained the necessary data. Before any new iteration, we need to
-        // store the old date so that it can be discarded if needed
-        std::vector<boost::tuple<unsigned int, unsigned int,BF> > strategyDumpingDataOld = strategyDumpingData;
-
         // Iterate over all of the liveness guarantees. Put the results into the variable 'nextContraintsForGoals' for every
         // goal. Then, after we have iterated over the goals, we can update mu2.
         BF nextContraintsForGoals = mgr.constantFalse();
         for (unsigned int j=0;j<livenessGuarantees.size();j++) {
 
+            // To extract a counterstrategy in case of unrealizability, we need to store a sequence of 'preferred' transitions in the
+            // game structure. These preferred transitions only need to be computed during the last execution of the middle
+            // greatest fixed point. Since we don't know which one is the last one, we store them in every iteration,
+            // so that after the last iteration, we obtained the necessary data. Before any new iteration, we need to
+            // store the old date so that it can be discarded if needed
+            std::vector<boost::tuple<unsigned int, unsigned int,BF> > strategyDumpingDataOld = strategyDumpingData;
+
             // Start computing the transitions that lead closer to the goal and lead to a position that is not yet known to be losing (for the environment).
             // Start with the ones that actually represent reaching the goal (which is a transition in this implementation as we can have
             // nexts in the goal descriptions).
-	     BF livetransitions = (!livenessGuarantees[j]) | (mu2.getValue().SwapVariables(varVectorPre,varVectorPost));
+            BF livetransitions = (!livenessGuarantees[j]) | (mu2.getValue().SwapVariables(varVectorPre,varVectorPost));
 
             // Compute the middle least-fixed point (called 'Y' in the GR(1) paper)
             BFFixedPoint nu1(mgr.constantTrue());
@@ -102,7 +102,6 @@ public:
                         foundPaths = livetransitions & (mu0.getValue().SwapVariables(varVectorPre,varVectorPost) | (livenessAssumptions[i]));
                         foundPaths = (safetyEnv & safetySys.Implies(foundPaths)).UnivAbstract(varCubePostOutput);
 
-                        BF_newDumpDot(*this,foundPaths,NULL,"/tmp/foundPaths.dot");
                         // Dump the paths that we just found into 'strategyDumpingData' - store the current goal
                         // with the BDD
                         strategyDumpingData.push_back(boost::make_tuple(i,j,foundPaths));
@@ -131,7 +130,6 @@ public:
 
     // We found the set of winning positions
     winningPositions = mu2.getValue();
-    BF_newDumpDot(*this,winningPositions,NULL,"/tmp/winningPositionsPlayer1.dot");
 }
 
 void checkRealizability() {

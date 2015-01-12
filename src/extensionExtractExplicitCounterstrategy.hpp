@@ -178,7 +178,7 @@ void computeAndPrintExplicitStateStrategy(std::ostream &outputStream) {
             assert(currentPossibilities != mgr.constantFalse());
             BF remainingTransitions = currentPossibilities;
 
-            // Choose one next input and stick to it!
+             // Choose one next input and stick to it!
             if (!((remainingTransitions & ! livenessGuarantees[current.second.second]).isFalse())) {
 	      remainingTransitions = remainingTransitions & ! livenessGuarantees[current.second.second];
 	    }
