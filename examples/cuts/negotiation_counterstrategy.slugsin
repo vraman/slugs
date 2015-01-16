@@ -1,0 +1,29 @@
+[INPUT]
+ball
+cat
+
+[OUTPUT]
+bit0
+
+[ENV_TRANS]
+! cat'
+
+[ENV_LIVENESS]
+| ball' ! cat'
+
+[ENV_INIT]
+1
+
+[SYS_TRANS]
+| ! ball' ! bit0'
+| ! cat' ! ! bit0'
+
+
+
+[SYS_LIVENESS]
+bit0'
+! bit0'
+
+[SYS_INIT]
+! bit0
+
