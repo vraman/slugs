@@ -57,6 +57,7 @@
 #include "extensionExtractSymbolicStrategy.hpp"
 #include "extensionTwoDimensionalCost.hpp"
 #include "extensionCooperativeGR1Strategy.hpp"
+#include "extensionCooperativePrefix.hpp"
 
 //===================================================================================
 // List of command line arguments
@@ -225,8 +226,10 @@ OptionCombination optionCombinations[] = {
     OptionCombination("--cooperativeGR1Strategy --simpleRecovery --symbolicStrategy --sysInitRoboticsSemantics",XExtractSymbolicStrategy<XRoboticsSemantics<XCooperativeGR1Strategy<GR1Context> >,true,false>::makeInstance),
     OptionCombination("--cooperativeGR1Strategy --simpleRecovery --simpleSymbolicStrategy --sysInitRoboticsSemantics",XExtractSymbolicStrategy<XRoboticsSemantics<XCooperativeGR1Strategy<GR1Context> >,true,true>::makeInstance),
     OptionCombination("--cooperativeGR1Strategy --interactiveStrategy --sysInitRoboticsSemantics",XInteractiveStrategy<XRoboticsSemantics<XCooperativeGR1Strategy<GR1Context> > >::makeInstance),
-    OptionCombination("--cooperativeGR1Strategy --onlyRealizability --sysInitRoboticsSemantics",XRoboticsSemantics<XCooperativeGR1Strategy<GR1Context> >::makeInstance)
+    OptionCombination("--cooperativeGR1Strategy --onlyRealizability --sysInitRoboticsSemantics",XRoboticsSemantics<XCooperativeGR1Strategy<GR1Context> >::makeInstance),
 
+    OptionCombination("--cooperativePrefix",XCooperativePrefix<GR1Context>::makeInstance)
+    
     // TODO: Combination between BiasForAction and FixedPointRecycling is not supported yet but would make sense
 };
 
