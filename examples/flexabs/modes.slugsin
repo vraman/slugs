@@ -1,0 +1,103 @@
+[INPUT]
+request_Jack
+request_WA1
+request_WA2
+r_Jack
+r_Jill
+r_WA1
+r_WA2
+r_table
+r_white
+pickup
+drop
+cant_fit
+
+[OUTPUT]
+r_Jack_a
+r_Jill_a
+r_WA1_a
+r_WA2_a
+r_table_a
+r_white_a
+pickup_a
+drop_a
+
+[ENV_TRANS]
+#restricts completion
+| ! & r_Jack r_Jack_a r_Jack'
+| ! & r_Jill r_Jill_a r_Jill'
+| ! & r_WA1 r_WA1_a r_WA1'
+| ! & r_WA2 r_WA2_a r_WA2'
+| ! & r_table r_table_a r_table'
+| ! & r_Jack r_white_a | r_Jack' r_white'
+| ! & r_Jill r_white_a | r_Jill' r_white'
+| ! & r_WA2 r_white_a | r_WA2' r_white'
+| ! & r_table r_white_a | r_table' r_white'
+| ! & r_table r_WA1_a | r_table' r_WA1'
+| ! & r_WA1 r_table_a | r_WA1' r_table'
+| ! & r_white r_Jack_a | r_white' r_Jack'
+| ! & r_white r_Jill_a | r_white' r_Jill'
+| ! & r_white r_WA2_a | r_white' r_WA2'
+| ! & r_white r_table_a | r_white' r_table'
+| ! cant_fit | cant_fit' & r_Jill' drop'
+| ! ! cant_fit | ! cant_fit' pickup'
+| ! drop' ! cant_fit'
+| ! request_Jack | request_Jack' & & ! request_Jack' r_Jack' pickup'
+| ! request_WA1 | | request_WA1' & & ! request_WA1' r_WA1' drop' & & & ! request_WA1' cant_fit r_Jill' drop'
+| ! request_WA2 | | request_WA2' & & ! request_WA2' r_WA2' drop' & & & ! request_WA2' cant_fit r_Jill' drop'
+! & request_WA1' request_WA2'
+# MUTEX
+| ! r_Jack' ! | | | | r_Jill' r_WA1' r_WA2' r_table' r_white'
+| ! r_Jill' ! | | | | r_Jack' r_WA1' r_WA2' r_table' r_white'
+| ! r_WA1' ! | | | | r_Jack' r_Jill' r_WA2' r_table' r_white'
+| ! r_WA2' ! | | | | r_Jack' r_Jill' r_WA1' r_table' r_white'
+| ! r_table' ! | | | | r_Jack' r_Jill' r_WA1' r_WA2' r_white'
+| ! r_white' ! | | | | r_Jack' r_Jill' r_WA1' r_WA2' r_table'
+| | | | | r_Jack' r_Jill' r_WA1' r_WA2' r_table' r_white'
+| ! & pickup pickup_a pickup'
+| ! & ! pickup ! pickup_a ! pickup'
+| ! & drop drop_a drop'
+| ! & ! drop ! drop_a ! drop'
+
+[ENV_INIT]
+& & & & & & & & & & & r_Jack ! r_Jill ! r_WA1 ! r_WA2 ! r_table ! r_white ! pickup ! drop ! cant_fit ! request_Jack ! request_WA1 ! request_WA2
+
+[SYS_TRANS]
+| ! r_Jack' | r_Jack_a' r_white_a'
+| ! r_Jill' | r_Jill_a' r_white_a'
+| ! r_WA1' | r_WA1_a' r_table_a'
+| ! r_WA2' | r_WA2_a' r_white_a'
+| ! r_white' | | | | | r_white_a' r_Jack_a' r_Jill_a' r_WA1_a' r_WA2_a' r_table_a'
+| ! r_table' | | r_table_a' r_WA1_a' r_white_a'
+| ! r_Jack_a' ! | | | | r_Jill_a' r_WA1_a' r_WA2_a' r_table_a' r_white_a'
+| ! r_Jill_a' ! | | | | r_Jack_a' r_WA1_a' r_WA2_a' r_table_a' r_white_a'
+| ! r_WA1_a' ! | | | | r_Jack_a' r_Jill_a' r_WA2_a' r_table_a' r_white_a'
+| ! r_WA2_a' ! | | | | r_Jack_a' r_Jill_a' r_WA1_a' r_table_a' r_white_a'
+| ! r_table_a' ! | | | | r_Jack_a' r_Jill_a' r_WA1_a' r_WA2_a' r_white_a'
+| ! r_white_a' ! | | | | r_Jack_a' r_Jill_a' r_WA1_a' r_WA2_a' r_table_a'
+| | | | | r_Jack_a' r_Jill_a' r_WA1_a' r_WA2_a' r_table_a' r_white_a'
+| ! ! & r_Jack' request_Jack ! pickup_a'
+| ! | & ! r_WA1' ! r_WA2' & ! request_WA1 ! request_WA2 ! drop_a'
+| ! & pickup_a ! pickup' | ! r_Jack' r_Jack_a'
+| ! & pickup_a ! pickup' | ! r_Jill' r_Jill_a'
+| ! & pickup_a ! pickup' | ! r_WA1' r_WA1_a'
+| ! & pickup_a ! pickup' | ! r_WA2' r_WA2_a'
+| ! & pickup_a ! pickup' | ! r_table' r_table_a'
+| ! & drop_a ! drop' | ! r_Jack' r_Jack_a'
+| ! & drop_a ! drop' | ! r_Jill' r_Jill_a'
+| ! & drop_a ! drop' | ! r_WA1' r_WA1_a'
+| ! & drop_a ! drop' | ! r_WA2' r_WA2_a'
+| ! & drop_a ! drop' | ! r_table' r_table_a'
+
+[SYS_INIT]
+& & & & & & & r_Jack_a ! r_Jill_a ! r_WA1_a ! r_WA2_a ! r_table_a ! r_white_a ! pickup_a ! drop_a
+
+[ENV_LIVENESS]
+#fairness on completion
+| | | | & | | | | | | | | | & r_Jack_a r_Jack' & r_Jill_a r_Jill' & r_WA1_a r_WA1' & r_WA2_a r_WA2' & r_table_a r_table' & r_Jack_a ! r_Jack_a' & r_Jill_a ! r_Jill_a' & r_WA1_a ! r_WA1_a' & r_WA2_a ! r_WA2_a' & r_table_a ! r_table_a' | | | & pickup_a ! pickup_a' & ! pickup_a pickup_a' & pickup_a pickup' & ! pickup_a ! pickup' & drop_a ! drop_a' & ! drop_a drop_a' & drop_a drop' & ! drop_a ! drop'
+
+[SYS_LIVENESS]
+| ! request_Jack & r_Jack' pickup'
+#(request_WA1 -> ((r_WA1' & drop') | (cant_fit & r_Jill' & drop')))
+#(request_WA2 -> ((r_WA2' & drop') | (cant_fit & r_Jill' & drop')))
+
