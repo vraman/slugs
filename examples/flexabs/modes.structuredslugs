@@ -82,7 +82,9 @@ r_Jack' | r_Jill' | r_WA1' | r_WA2' | r_table' | r_white'
 
 [ENV_LIVENESS]
 #fairness on completion
-((r_Jack_a & r_Jack') | (r_Jill_a & r_Jill') | (r_WA1_a & r_WA1') | (r_WA2_a & r_WA2') | (r_table_a & r_table') | (r_Jack_a & !r_Jack_a') | (r_Jill_a & !r_Jill_a') | (r_WA1_a & !r_WA1_a') | (r_WA2_a & !r_WA2_a') | (r_table_a & !r_table_a') ) & ((pickup_a & !pickup_a') | (!pickup_a & pickup_a') | (pickup_a & pickup') | (!pickup_a & !pickup')) | ((drop_a & !drop_a') | (!drop_a & drop_a') | (drop_a & drop') | (!drop_a & !drop'))
+((r_Jack_a & r_Jack') | (r_Jill_a & r_Jill') | (r_WA1_a & r_WA1') | (r_WA2_a & r_WA2') | (r_table_a & r_table') | (r_Jack_a & !r_Jack_a') | (r_Jill_a & !r_Jill_a') | (r_WA1_a & !r_WA1_a') | (r_WA2_a & !r_WA2_a') | (r_table_a & !r_table_a') )
+((pickup_a & !pickup_a') | (!pickup_a & pickup_a') | (pickup_a & pickup') | (!pickup_a & !pickup')) 
+((drop_a & !drop_a') | (!drop_a & drop_a') | (drop_a & drop') | (!drop_a & !drop'))
 
 
 [ENV_INIT]
